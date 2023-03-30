@@ -14,10 +14,10 @@ from utils.general import check_img_size, non_max_suppression, scale_coords, inc
 from utils.plots import plot_one_box
 from utils.torch_utils import select_device, time_synchronized
 
-ACCESS_KEY = "AKIA22AJKUY6F4LHAVN2"
-SECRET_KEY = "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"
-BUCKET_NAME = "distributedbucket"
-FINAL_BUCKET_NAME = "distributedbucket-final"
+ACCESS_KEY = ""
+SECRET_KEY = ""
+BUCKET_NAME = ""
+FINAL_BUCKET_NAME = ""
 
 
 async def _predict(model_name, model_runner, img_src, img_size):
