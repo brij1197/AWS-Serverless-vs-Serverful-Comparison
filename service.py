@@ -83,7 +83,6 @@ def s3_download(s3_obj, bucket_name, object_name):
 def s3_upload(s3_obj, bucket_name, filepath):
     try:
         s3_obj.upload_file(filepath, bucket_name, filepath.name, ExtraArgs={'ACL': 'public-read'})
-        print("Uploaded")
     except botocore.exceptions.ClientError as e:
         print(e)
 
