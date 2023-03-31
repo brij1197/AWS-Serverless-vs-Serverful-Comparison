@@ -65,7 +65,7 @@ def _predict(model_name: Path, model_runner, img_src: Path, img_size: int):
                 cv2.imwrite(save_path.as_posix(), im0)
                 print(f" The image with the result is saved in: {save_path}")
 
-        print(f'Done. ({time.time() - t0:.3f}s)')
+        # print(f'Done. ({time.time() - t0:.3f}s)')
     return True, save_path
 
 
@@ -82,7 +82,7 @@ def s3_download(s3_obj, bucket_name, object_name):
 
 def s3_upload(s3_obj, bucket_name, filepath):
     try:
-        s3_obj.upload_file(filepath, bucket_name, filepath.name)
+        s3_obj.upload_file(filepath, bucket_name, filepath.name, ExtraArgs={'ACL': 'public-read'})
         print("Uploaded")
     except botocore.exceptions.ClientError as e:
         print(e)
@@ -98,16 +98,33 @@ def predict(parsed_json: JSON) -> JSON:
     BUCKET_NAME = 'distributedbucket'
     KEY = parsed_json["filename"]
     s3_obj = boto3.client('s3')
+
+    start_time = time.time()
     model_filpath = s3_download(s3_obj, MODEL_BUCKET_NAME, "yolov7.pt")
+    print(f'Time to Download the model: ({time.time() - start_time:.3f}s)')
+
+    start_time = time.time()
     img_filepath = s3_download(s3_obj, BUCKET_NAME, KEY)
+    print(f'Time to Download the request input file: ({time.time() - start_time:.3f}s)')
+
+    start_time = time.time()
     outcome, output_filepath = _predict(
         model_name=model_filpath,
         model_runner=model_runner,
         img_src=img_filepath,
         img_size=640
     )
+    print(f'Inference time. ({time.time() - start_time:.3f}s)')
+
     if outcome:
         FINAL_BUCKET_NAME = 'distributedbucket-final'
+
+        start_time = time.time()
         s3_upload(s3_obj, FINAL_BUCKET_NAME, output_filepath)
-        # return {"location": f"https://{FINAL_BUCKET_NAME}.s3.amazonaws.com/{output_filepath.name}"}
-        return {"Bucket": FINAL_BUCKET_NAME, "Filename": output_filepath.name}
+        print(f'Time to Upload the output image: ({time.time() - start_time:.3f}s)')
+
+        return {
+            "bucket": FINAL_BUCKET_NAME,
+            "filename": output_filepath.name,
+            "location": f"https://{FINAL_BUCKET_NAME}.s3.amazonaws.com/{output_filepath.name}"
+        }
