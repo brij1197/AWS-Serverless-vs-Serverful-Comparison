@@ -17,7 +17,7 @@ The project **Comparing Serverless and Serverful Performance for a Machine Learn
 	 - [Tests](#Tests) 
 	 - [Results](#Results) 
 		 - [Response time comparison](#Response-time-comparison)
-		 - [Response Time Graph: Serverful vs Serverless](#Response-Time-Graph-:-Serverful-vs-Serverless)
+		 - [Response Time Graph](#Response-Time-Graph)
  - [Report](#Detailed-Report)
  - [Authors](#Authors)	
 <br><br>
@@ -71,7 +71,8 @@ For our Serverless Deployment on AWS Lambda, we used Bentoctl, a CLI tool built 
 ### Response time comparison
 For serverful (the EC2 cluster), we obtained the optimal results with 2 t3a.xlarge EC2 instances. We started with 1 default EC2 instance which auto-scaled itself to add one more EC2 instance of the respective type to handle the application load.
 
-#### Response Time Graph: Serverful vs Serverless
+### Response Time Graphs
+#### Response Time Graphs: Serverful vs Serverless
 <img
   src="assets/Graph_Comparison.png"
   alt="Avgerage Response Time">
