@@ -17,7 +17,7 @@ The project **Comparing Serverless and Serverful Performance for a Machine Learn
 	 - [Tests](#Tests) 
 	 - [Results](#Results) 
 		 - [Response time comparison](#Response-time-comparison)
-		 - [Response Time Graph](#Response-Time-Graph)
+		 - [Response Time Graphs](#Response-Time-Graphs)
  - [Report](#Detailed-Report)
  - [Authors](#Authors)	
 <br><br>
